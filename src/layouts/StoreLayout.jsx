@@ -1,10 +1,11 @@
 import { Outlet } from 'react-router-dom'
 import Header from '@/components/common/Header'
 import Footer from '@/components/common/Footer'
+import MobileBottomNav from '@/components/common/MobileBottomNav'
 
 function StoreLayout() {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col bg-background">
       <Header />
 
       <main className="flex-1">
@@ -12,6 +13,7 @@ function StoreLayout() {
       </main>
 
       <Footer />
+      <MobileBottomNav />
     </div>
   )
 }

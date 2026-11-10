@@ -1,513 +1,399 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
-  Mail, Share, Globe, ArrowRight, BadgeCheck,
-  LockKeyhole,
-  Truck,
+  ArrowRight,
+  BadgeCheck,
+  Gem,
   Headset,
+  LockKeyhole,
+  Mail,
+  Sparkles,
+  Truck,
 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import ProductCard from '@/components/common/ProductCard'
+import SectionHeading from '@/components/common/SectionHeading'
+import { featuredProducts as products } from '@/features/products/data/products'
+import { categories } from '@/features/category/data/categories'
+import { cn } from '@/lib/utils'
+
+const HERO_IMAGE =
+  'https://lh3.googleusercontent.com/aida-public/AB6AXuARKK3_IbrV0cAirNHKl_i0dtLi_UJfCLlpArgcDcSZyo4Mwq1XV_VgFJLON7ZRmjyyJ1H-pONUUQLb_6OUUsqg7wCPEEQ2oAsiCOTh-u46a3c0-istlnE0BnvIboB057Da9uXepHmjGE-dvsfT1yV42jCSp566d6oaR1N-zvwaJ167G7PSxekxyCcklYiPWCGE5ucmtFXyz16_VzzvTNepu7ZXhDbHCylvO0bySMlf'
+
+const EDITORIAL_IMAGE =
+  'https://lh3.googleusercontent.com/aida-public/AB6AXuAVQTMq67_nWKYDHN82rvaGfyVmIXen37l_6wrADpJDIhiBoYh6LMDtIX6UnUNnHVqtQB3RgbiBfm68fXCvV9IH7EFocDsb-hPJHxbzETQpG83-PHsORKElC75AwZQjohnQh0G9v3PAMeP7OwJpAf-Sxz2M9PtQ5-8pUTFZXvu0QeP1Si0BqtPLOj8JqsSvJSwq3qL0Ty0uUwDQDTgvXdVCuvb5OPHN0QnEos7eFiQX'
+
+const stats = [
+  { label: 'Edition', value: '01 / 02 Curated', icon: Sparkles },
+  { label: 'Integrity', value: '100% Artisanal', icon: Gem },
+]
+
+const features = [
+  {
+    title: 'Carefully Selected',
+    icon: BadgeCheck,
+    description: 'Sourced from independent artisans for enduring craftsmanship.',
+  },
+  {
+    title: 'Secure Payments',
+    icon: LockKeyhole,
+    description: 'End-to-end encrypted checkout for complete peace of mind.',
+  },
+  {
+    title: 'Reliable Delivery',
+    icon: Truck,
+    description: 'Eco-conscious packaging with tracking on every order.',
+  },
+  {
+    title: 'Customer Care',
+    icon: Headset,
+    description: 'Personal assistance and styling advice whenever you need it.',
+  },
+]
+
+const categoryCounts = products.reduce((acc, { category }) => {
+  acc[category] = (acc[category] ?? 0) + 1
+  return acc
+}, {})
+
+const filters = [
+  { label: 'All Selections', value: 'all', count: products.length },
+  ...Object.entries(categoryCounts).map(([category, count]) => ({
+    label: category,
+    value: category,
+    count,
+  })),
+]
+
+// Shared CTA styles
+const ctaBase =
+  'inline-flex h-12 items-center justify-center gap-2 rounded-lg px-6 text-xs font-semibold uppercase tracking-[0.15em] transition-colors'
+const sectionX = 'px-4 md:px-8'
+const container = 'mx-auto max-w-full'
 
 function HomePage() {
-  const products = [
-    {
-      id: 1,
-      name: 'Pearl Drop Earrings',
-      slug: 'pearl-drop-earrings',
-      image:
-        'https://lh3.googleusercontent.com/aida-public/AB6AXuC9-NciIuCq_DBK_oUFrIRR7HXvm9LWfyVLsfySLmXIEiAo3levcho1ftpXwOGzVtdC9HyR1rK15iBIh1YAmnM2QYUjWz-vl4cVL7sfBE_mAlJ7A9XhWOAey0M1LDeFO411SlgI_ieXqcGSQPMW6VBbNb2sZ-hiq-EWGGu3WlZ0_c1mFdSf4S1wWSPeVSBOJotBXA3osg7HgFJOolc3QLPiY2sARu4D3oND98izFm8c',
-      category: 'Earrings',
-      price: 4500,
-      originalPrice: 6500,
-      rating: 4.8,
-      reviewCount: 128,
-      isNew: true,
-    },
-    {
-      id: 2,
-      name: 'Modern Frames',
-      slug: 'modern-frames',
-      image:
-        'https://lh3.googleusercontent.com/aida-public/AB6AXuBKtvBaOYkKvRSLMWDtcayVQk7dElJGTOR_a7Iq98nq0EY1mMy7bU5qBzkcpqja4Gvug8irg3htzbL6yZ07Iio-Bkj_mR1bJtjfe0HPkbtfh_mSO4ktkvEuNelxFANNRQn2D7vRlamhFbNOru4kfOuMKjmZR0ugHuukL2kcaTbI-efJNv7VFIvs0aoCaZ4r7JWlL14PpUbYPZeDs3hsJRvATp0FSXwKszjkPEy7dFsa',
-      category: 'Frames',
-      price: 3200,
-      originalPrice: 4800,
-      rating: 4.5,
-      reviewCount: 92,
-    },
-    {
-      id: 3,
-      name: 'Silhouette Pendant',
-      slug: 'silhouette-pendant',
-      image:
-        'https://lh3.googleusercontent.com/aida-public/AB6AXuC9-NciIuCq_DBK_oUFrIRR7HXvm9LWfyVLsfySLmXIEiAo3levcho1ftpXwOGzVtdC9HyR1rK15iBIh1YAmnM2QYUjWz-vl4cVL7sfBE_mAlJ7A9XhWOAey0M1LDeFO411SlgI_ieXqcGSQPMW6VBbNb2sZ-hiq-EWGGu3WlZ0_c1mFdSf4S1wWSPeVSBOJotBXA3osg7HgFJOolc3QLPiY2sARu4D3oND98izFm8c',
-      category: 'Necklaces',
-      price: 2800,
-      originalPrice: 4200,
-      rating: 4.7,
-      reviewCount: 67,
-      isNew: true,
-    },
-    {
-      id: 4,
-      name: 'Artisan Profile',
-      slug: 'artisan-profile',
-      image:
-        'https://lh3.googleusercontent.com/aida-public/AB6AXuBKtvBaOYkKvRSLMWDtcayVQk7dElJGTOR_a7Iq98nq0EY1mMy7bU5qBzkcpqja4Gvug8irg3htzbL6yZ07Iio-Bkj_mR1bJtjfe0HPkbtfh_mSO4ktkvEuNelxFANNRQn2D7vRlamhFbNOru4kfOuMKjmZR0ugHuukL2kcaTbI-efJNv7VFIvs0aoCaZ4r7JWlL14PpUbYPZeDs3hsJRvATp0FSXwKszjkPEy7dFsa',
-      category: 'Frames',
-      price: 3500,
-      originalPrice: 5200,
-      rating: 4.3,
-      reviewCount: 45,
-    },
-    {
-      id: 5,
-      name: 'Gold Chain Link',
-      slug: 'gold-chain-link',
-      image:
-        'https://lh3.googleusercontent.com/aida-public/AB6AXuC9-NciIuCq_DBK_oUFrIRR7HXvm9LWfyVLsfySLmXIEiAo3levcho1ftpXwOGzVtdC9HyR1rK15iBIh1YAmnM2QYUjWz-vl4cVL7sfBE_mAlJ7A9XhWOAey0M1LDeFO411SlgI_ieXqcGSQPMW6VBbNb2sZ-hiq-EWGGu3WlZ0_c1mFdSf4S1wWSPeVSBOJotBXA3osg7HgFJOolc3QLPiY2sARu4D3oND98izFm8c',
-      category: 'Necklaces',
-      price: 5800,
-      originalPrice: 8500,
-      rating: 4.9,
-      reviewCount: 234,
-      isNew: true,
-    },
-    {
-      id: 6,
-      name: 'Diamond Studs',
-      slug: 'diamond-studs',
-      image:
-        'https://lh3.googleusercontent.com/aida-public/AB6AXuBKtvBaOYkKvRSLMWDtcayVQk7dElJGTOR_a7Iq98nq0EY1mMy7bU5qBzkcpqja4Gvug8irg3htzbL6yZ07Iio-Bkj_mR1bJtjfe0HPkbtfh_mSO4ktkvEuNelxFANNRQn2D7vRlamhFbNOru4kfOuMKjmZR0ugHuukL2kcaTbI-efJNv7VFIvs0aoCaZ4r7JWlL14PpUbYPZeDs3hsJRvATp0FSXwKszjkPEy7dFsa',
-      category: 'Earrings',
-      price: 7200,
-      originalPrice: 9800,
-      rating: 5.0,
-      reviewCount: 312,
-    },
-    {
-      id: 7,
-      name: 'Minimalist Band',
-      slug: 'minimalist-band',
-      image:
-        'https://lh3.googleusercontent.com/aida-public/AB6AXuC9-NciIuCq_DBK_oUFrIRR7HXvm9LWfyVLsfySLmXIEiAo3levcho1ftpXwOGzVtdC9HyR1rK15iBIh1YAmnM2QYUjWz-vl4cVL7sfBE_mAlJ7A9XhWOAey0M1LDeFO411SlgI_ieXqcGSQPMW6VBbNb2sZ-hiq-EWGGu3WlZ0_c1mFdSf4S1wWSPeVSBOJotBXA3osg7HgFJOolc3QLPiY2sARu4D3oND98izFm8c',
-      category: 'Rings',
-      price: 3800,
-      originalPrice: 5500,
-      rating: 4.6,
-      reviewCount: 89,
-      isNew: true,
-    },
-    {
-      id: 8,
-      name: 'Signature Watch',
-      slug: 'signature-watch',
-      image:
-        'https://lh3.googleusercontent.com/aida-public/AB6AXuBKtvBaOYkKvRSLMWDtcayVQk7dElJGTOR_a7Iq98nq0EY1mMy7bU5qBzkcpqja4Gvug8irg3htzbL6yZ07Iio-Bkj_mR1bJtjfe0HPkbtfh_mSO4ktkvEuNelxFANNRQn2D7vRlamhFbNOru4kfOuMKjmZR0ugHuukL2kcaTbI-efJNv7VFIvs0aoCaZ4r7JWlL14PpUbYPZeDs3hsJRvATp0FSXwKszjkPEy7dFsa',
-      category: 'Accessories',
-      price: 8500,
-      originalPrice: 12000,
-      rating: 4.8,
-      reviewCount: 156,
-    },
-  ]
+  const [activeFilter, setActiveFilter] = useState('all')
+  const [subscribed, setSubscribed] = useState(false)
 
-  const features = [
-    {
-      title: "Carefully Selected Products",
-      icon: BadgeCheck,
-      description:
-        "Every item in our collection is chosen for enduring craftsmanship and aesthetic clarity.",
-    },
-    {
-      title: "Secure Payments",
-      icon: LockKeyhole,
-      description:
-        "Industry-standard encrypted checkout supporting major cards and digital wallets.",
-    },
-    {
-      title: "Reliable Shopping Experience",
-      icon: Truck,
-      description:
-        "Transparent order tracking and prompt fulfillment on every purchase.",
-    },
-    {
-      title: "Customer Support",
-      icon: Headset,
-      description:
-        "Dedicated assistance ready to help with orders, inquiries, or style guidance.",
-    },
-  ];
+  const visibleProducts =
+    activeFilter === 'all'
+      ? products
+      : products.filter((p) => p.category === activeFilter)
+
+  const handleSubscribe = (e) => {
+    e.preventDefault()
+    e.currentTarget.reset()
+    setSubscribed(true)
+  }
+
   return (
     <>
-      {/* <header className="fixed top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
-        
-        <div className="mx-auto max-w-7xl px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <button
-              aria-label="Toggle menu"
-              className="md:hidden flex items-center justify-center p-1 rounded hover:bg-accent hover:text-surface transition-colors"
-            >
-              <Menu size={24} />
-            </button>
-            <Link
-              to="/"
-              className="flex items-center gap-3 font-heading text-2xl font-semibold tracking-tight text-primary"
-            >
-              <span className="font-heading text-2xl font-semibold">BRAND</span>
-            </Link>
-          </div>
+      {/* Hero */}
+      <section>
+        <div
+          className='relative flex min-h-[460px] items-end overflow-hidden  bg-soft sm:min-h-[520px] lg:min-h-[600px] lg:items-center'
+        >
+          <img
+            src={HERO_IMAGE}
+            alt=""
+            fetchPriority="high"
+            className="absolute inset-0 size-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-black/5 lg:bg-gradient-to-r lg:from-black/65 lg:via-black/30 lg:to-transparent" />
 
-          <nav className="hidden md:flex items-center gap-6 text-sm">
-            <Link to="/" className="hover:text-accent">Home</Link>
-            <Link to="/shop" className="hover:text-accent">Shop</Link>
-            <Link to="/categories" className="hover:text-accent">Categories</Link>
-            <Link to="/about-us" className="hover:text-accent">About Us</Link>
-            <Link to="/contact" className="hover:text-accent">Contact</Link>
-          </nav>
+          <div className="relative z-10 w-full p-5 text-white sm:p-8">
+            <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] backdrop-blur-md">
+              <span className="size-1.5 rounded-full bg-white" />
+              New Season Arrival
+            </span>
 
-          <div className="flex items-center gap-2 md:gap-3">
-            <button
-              aria-label="Search"
-              className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-accent hover:text-surface transition-colors"
-            >
-              <Search size={20} />
-            </button>
-            <Link
-              to="/wishlist"
-              aria-label="Wishlist"
-              className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-accent hover:text-surface transition-colors"
-            >
-              <Heart size={20} />
-            </Link>
-            <Link
-              to="/cart"
-              aria-label="Cart"
-              className="relative w-10 h-10 flex items-center justify-center rounded-full hover:bg-accent hover:text-surface transition-colors"
-            >
-              <ShoppingBag size={20} />
-            </Link>
-            <div className="pl-2">
+            <h1 className="mt-4 font-heading text-[2rem] leading-[1.1] tracking-tight sm:text-5xl lg:text-6xl">
+              Discover Your Everyday Favourites
+            </h1>
+
+            <p className="mt-3 max-w-md text-sm leading-relaxed text-white/85 sm:text-base">
+              Explore thoughtfully selected products that bring personality,
+              style, and inspiration to your everyday life.
+            </p>
+
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               <Link
-                to="/account"
-                className="block p-0.5 rounded-full hover:ring-2 hover:ring-accent transition-all"
+                to="/products"
+                className={cn(
+                  ctaBase,
+                  'bg-primary text-primary-foreground hover:bg-primary/85'
+                )}
               >
-                <img
-                  alt="Profile"
-                  className="w-8 h-8 rounded-full object-cover"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8mUb1uirK6QkMxbj6IRZXfri3pQYi70n9avmRJfhvbYHxCH4PvAnjzhkVdJiPtMJsYsSURXkz54wBnJe51BBMbIqD9ydxZCNSBlLzI0GDeuHexr9Zi_PaaixV3EPvRMulsaXZPyFfmnDweWh5Aqbgt8FWRivCIa86RYm-Be2609_uP0mJmzaCqzPXi38hrG99AMXhDc2m-nTjtiesLUxXsL6KyefTohJkUGqQd3uP"
-                />
+                Explore Collection
+              </Link>
+              <Link
+                to="/products"
+                className={cn(
+                  ctaBase,
+                  'border border-white/40 bg-white/10 text-white backdrop-blur-sm hover:bg-white/20'
+                )}
+              >
+                Shop Now
               </Link>
             </div>
           </div>
         </div>
-      </header> */}
-      <main className="w-full  bg-background">
-        {/* Hero Banner */}
-        <section className="w-full  pb-20">
-          <div className="mx-auto max-w-[1440px]">
-            <div className="relative rounded-2xl overflow-hidden bg-accent min-h-[580px] lg:min-h-[640px] flex items-center shadow-sm">
-              <div
-                className="absolute inset-0 w-full h-full bg-cover bg-center transition-transform duration-1000 scale-[1.01]"
-                style={{
-                  backgroundImage:
-                    "url('https://lh3.googleusercontent.com/aida-public/AB6AXuARKK3_IbrV0cAirNHKl_i0dtLi_UJfCLlpArgcDcSZyo4Mwq1XV_VgFJLON7ZRmjyyJ1H-pONUUQLb_6OUUsqg7wCPEEQ2oAsiCOTh-u46a3c0-istlnE0BnvIboB057Da9uXepHmjGE-dvsfT1yV42jCSp566d6oaR1N-zvwaJ167G7PSxekxyCcklYiPWCGE5ucmtFXyz16_VzzvTNepu7ZXhDbHCylvO0bySMlf')",
-                }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/75 to-transparent md:w-3/4 lg:w-3/5" />
-              <div className="relative z-10 p-4 md:p-8 max-w-2xl flex flex-col items-start">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/80 backdrop-blur-md mb-4">
-                  <span className="w-1.5 h-1.5 rounded-full bg-secondary" />
-                  <span className="text-[10px] uppercase tracking-widest text-secondary">The 2024 Collection</span>
-                </div>
-                <h1 className="font-heading text-4xl md:text-5xl text-primary tracking-tight mb-4 leading-[1.1]">
-                  Discover Your Everyday Favourites
-                </h1>
-                <p className="text-lg md:text-xl mb-6 max-w-lg leading-relaxed">
-                  Explore thoughtfully selected products that bring personality, style, and inspiration to your everyday life.
+      </section>
+
+      {/* Stats */}
+      <section className={cn(sectionX, 'pt-3 md:pt-4')}>
+        <div className={cn(container, 'grid grid-cols-2 gap-3 md:gap-4')}>
+          {stats.map(({ label, value, icon: Icon }) => (
+            <div
+              key={label}
+              className="flex items-center gap-3 rounded-xl border border-border bg-surface p-3 sm:p-4 md:p-5"
+            >
+              <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-soft text-accent md:size-11">
+                <Icon size={16} strokeWidth={1.8} />
+              </div>
+              <div className="min-w-0">
+                <p className="text-[9px] font-medium uppercase tracking-[0.2em] text-secondary md:text-[10px]">
+                  {label}
                 </p>
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
-                  <Button size="lg" className="w-full sm:w-auto">
-                    EXPLORE COLLECTION
-                  </Button>
-                  <Button size="lg" variant="outline" className="w-full sm:w-auto">
-                    SHOP NOW
-                  </Button>
-                </div>
-                <div className="mt-8 pt-4 flex items-center gap-6">
-                  <div className="flex flex-col">
-                    <span className="text-2xl font-heading text-primary">01 / 02</span>
-                    <span className="text-xs uppercase tracking-widest">Curated Editions</span>
-                  </div>
-                  <div className="h-8 w-px bg-border" />
-                  <div className="flex flex-col">
-                    <span className="text-2xl font-heading text-primary">100%</span>
-                    <span className="text-xs uppercase tracking-widest">Artisanal Sourcing</span>
-                  </div>
-                </div>
+                <p className="text-[13px] font-semibold leading-snug text-primary md:text-base">
+                  {value}
+                </p>
               </div>
             </div>
-          </div>
-        </section>
+          ))}
+        </div>
+      </section>
 
-        {/* Shop by Category */}
-        <section className="w-full px-4 md:px-8 py-12">
-          <div className="mx-auto max-w-[1440px]">
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
-              <div>
-                <span className="text-[10px] uppercase tracking-widest block mb-1">Curation</span>
-                <h2 className="font-heading text-2xl md:text-3xl text-primary tracking-tight">Explore Our Categories</h2>
-                <p className="text-sm mt-1">Find something that feels just right for you.</p>
-              </div>
+      {/* Categories */}
+      <section className={cn(sectionX, 'pt-12 md:pt-20')}>
+        <div className={container}>
+          <SectionHeading
+            title="Explore Categories"
+            description="Find something that feels just right for you."
+            action={
+              <span className="shrink-0 pb-1 text-[10px] font-medium uppercase tracking-[0.2em] text-secondary">
+                {categories.length} Lines
+              </span>
+            }
+          />
+
+          <div className="grid grid-cols-2 gap-3 md:gap-6">
+            {categories.map((category, index) => (
               <Link
-                to="/categories"
-                className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-accent transition-colors group"
+                key={category.slug}
+                to={`/categories/${category.slug}`}
+                className="group flex flex-col"
               >
-                View All Categories
-                <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
-              </Link>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {[
-                {
-                  name: 'Earrings',
-                  slug: 'earrings',
-                  image:
-                    'https://lh3.googleusercontent.com/aida-public/AB6AXuBKtvBaOYkKvRSLMWDtcayVQk7dElJGTOR_a7Iq98nq0EY1mMy7bU5qBzkcpqja4Gvug8irg3htzbL6yZ07Iio-Bkj_mR1bJtjfe0HPkbtfh_mSO4ktkvEuNelxFANNRQn2D7vRlamhFbNOru4kfOuMKjmZR0ugHuukL2kcaTbI-efJNv7VFIvs0aoCaZ4r7JWlL14PpUbYPZeDs3hsJRvATp0FSXwKszjkPEy7dFsa',
-                  description: 'Artisanal silhouettes and timeless modern finishes.',
-                },
-                {
-                  name: 'Frames',
-                  slug: 'frames',
-                  image:
-                    'https://lh3.googleusercontent.com/aida-public/AB6AXuBKtvBaOYkKvRSLMWDtcayVQk7dElJGTOR_a7Iq98nq0EY1mMy7bU5qBzkcpqja4Gvug8irg3htzbL6yZ07Iio-Bkj_mR1bJtjfe0HPkbtfh_mSO4ktkvEuNelxFANNRQn2D7vRlamhFbNOru4kfOuMKjmZR0ugHuukL2kcaTbI-efJNv7VFIvs0aoCaZ4r7JWlL14PpUbYPZeDs3hsJRvATp0FSXwKszjkPEy7dFsa',
-                  description: 'Handcrafted profiles designed to celebrate your memories.',
-                },
-              ].map((category) => (
-                <Link
-                  key={category.slug}
-                  to={`/categories/${category.slug}`}
-                  className="group relative rounded-2xl overflow-hidden bg-background p-6 flex flex-col justify-between transition-all hover:shadow-md"
-                >
-                  <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden mb-4 bg-accent">
-                    <img
-                      src={category.image}
-                      alt={category.name}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                    <div className="absolute top-4 left-4">
-                      <span className="px-3 py-1 rounded-md bg-white/90 backdrop-blur-sm text-[10px] uppercase tracking-wider font-medium">
-                        Category 01
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex flex-col">
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-sm font-medium text-primary  transition-colors">
-                        {category.name}
-                      </h3>
-                      <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-primary  transition-all">
-                        <ArrowRight size={18} />
-                      </div>
-                    </div>
-                    <p className="text-sm mt-1 mb-3">{category.description}</p>
-                    <span className="text-sm font-medium inline-flex items-center gap-1">
-                      Explore {category.name}
-                    </span>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Featured Products */}
-        <section className="w-full px-4 md:px-8 py-16 bg-accent/50">
-          <div className="mx-auto max-w-[1440px]">
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
-              <div>
-                <span className="text-[10px] uppercase tracking-widest text-secondary block mb-1">Selected Goods</span>
-                <h2 className="font-heading text-2xl md:text-3xl text-primary tracking-tight">Handpicked for You</h2>
-                <p className="text-sm text-secondary mt-1">Explore some of our favourite picks.</p>
-              </div>
-              <div className="flex items-center gap-2 overflow-x-auto pb-1">
-                <Button size="sm">All Selections</Button>
-                <Button size="sm" variant="outline">Earrings</Button>
-                <Button size="sm" variant="outline">Frames</Button>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {products.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-
-            <div className="mt-12 text-center">
-              <Button size="lg">DISCOVER ALL PRODUCTS</Button>
-            </div>
-          </div>
-        </section>
-
-        {/* Editorial Lifestyle Banner */}
-        <section className="w-full px-4 md:px-8 py-12">
-          <div className="mx-auto max-w-[1440px]">
-            <div className="relative rounded-2xl overflow-hidden min-h-[480px] lg:min-h-[520px] flex items-center p-4 md:p-8 bg-surface-container shadow-sm">
-              <div
-                className="absolute inset-0 w-full h-full bg-cover bg-center"
-                style={{
-                  backgroundImage:
-                    "url('https://lh3.googleusercontent.com/aida-public/AB6AXuAVQTMq67_nWKYDHN82rvaGfyVmIXen37l_6wrADpJDIhiBoYh6LMDtIX6UnUNnHVqtQB3RgbiBfm68fXCvV9IH7EFocDsb-hPJHxbzETQpG83-PHsORKElC75AwZQjohnQh0G9v3PAMeP7OwJpAf-Sxz2M9PtQ5-8pUTFZXvu0QeP1Si0BqtPLOj8JqsSvJSwq3qL0Ty0uUwDQDTgvXdVCuvb5OPHN0QnEos7eFiQX')",
-                }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/70 to-transparent md:w-3/5" />
-              <div className="relative z-10 max-w-lg flex flex-col items-start">
-                <span className="text-[10px] uppercase tracking-widest mb-2">Editorial Narrative</span>
-                <h2 className="font-heading text-2xl md:text-3xl text-primary tracking-tight mb-4 leading-tight">
-                  Made to Match Your Style
-                </h2>
-                <p className="text-lg md:text-xl mb-6 leading-relaxed">
-                  Explore products that make everyday moments feel a little more special.
-                </p>
-                <Button size="lg">
-                  DISCOVER THE STORY
-                </Button>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Why Shop With Us */}
-        <section className="w-full px-4 md:px-8 py-16 bg-accent/50">
-          <div className="mx-auto max-w-[1440px]">
-            <div className="text-center max-w-xl mx-auto mb-16">
-              <span className="text-[10px] uppercase tracking-widest block mb-1">The Experience</span>
-              <h2 className="font-heading text-2xl md:text-3xl text-primary tracking-tight">Shopping Made Simple</h2>
-              <p className="text-sm mt-2">Understated excellence and thoughtful execution at every step.</p>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {features.map((feature) => {
-                const Icon = feature.icon;
-
-                return (
-                  <div
-                    key={feature.title}
-                    className="flex flex-col items-start bg-background p-6 rounded-xl shadow-sm hover:-translate-y-1 transition-transform duration-200"
-                  >
-                    <div className="w-10 h-10 rounded-lg bg-accent flex items-center justify-center text-primary mb-4">
-                      <Icon size={20} strokeWidth={1.8} />
-                    </div>
-
-                    <h3 className="font-heading text-base text-primary mb-2">
-                      {feature.title}
-                    </h3>
-
-                    <p className="text-sm leading-relaxed">
-                      {feature.description}
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
-
-
-          </div>
-        </section>
-
-        {/* Newsletter Subscription */}
-        <section className="w-full px-4 md:px-8 py-16">
-          <div className="mx-auto max-w-[1440px]">
-            <div className="relative rounded-3xl bg-accent/50 p-8 md:p-12 overflow-hidden shadow-sm">
-              <div className="relative z-10 max-w-2xl mx-auto text-center flex flex-col items-center">
-                <span className="text-[10px] uppercase tracking-widest text-secondary mb-2">Correspondence</span>
-                <h2 className="font-heading text-2xl md:text-3xl text-primary tracking-tight mb-2">
-                  A Little Inspiration in Your Inbox
-                </h2>
-                <p className="text-sm md:text-base mb-6 max-w-lg">
-                  Be the first to discover new arrivals, updates, and special collections.
-                </p>
-                <form
-                  className="w-full max-w-md flex flex-col sm:flex-row gap-3 mb-3"
-                  onSubmit={(e) => {
-                    e.preventDefault()
-                    const input = e.currentTarget.querySelector('input')
-                    if (input) input.value = ''
-                    alert('Thank you for subscribing.')
-                  }}
-                >
-                  <input
-                    className="flex-grow h-12 px-4 rounded-xl bg-background text-primary font-body-md  focus:outline-none focus:ring-2 focus:ring-primary shadow-sm"
-                    placeholder="Enter your email address"
-                    type="email"
-                    required
+                <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-soft md:aspect-[4/3]">
+                  <img
+                    src={category.image}
+                    alt={category.name}
+                    loading="lazy"
+                    className="size-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  <Button
-                    type="submit"
-                    className="h-12 px-8 rounded-xl inline-flex items-center justify-center whitespace-nowrap shrink-0 w-full sm:w-auto"
-                  >
-                    SUBSCRIBE
-                  </Button>
-                </form>
-                <p className="text-[10px] text-secondary">We respect your privacy. Unsubscribe at any time.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
+                  <span className="absolute left-2.5 top-2.5 rounded-sm bg-surface/90 px-2 py-1 text-[9px] font-semibold uppercase leading-none tracking-wider text-primary backdrop-blur-sm md:left-4 md:top-4">
+                    Category {String(index + 1).padStart(2, '0')}
+                  </span>
+                </div>
 
-      <footer className="w-full bg-surface-container-low mt-20 shadow-[0_-1px_8px_rgba(0,0,0,0.02)]">
-        <div className="mx-auto max-w-7xl px-4 py-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
-            <div className="lg:col-span-2 flex flex-col pr-8 lg:pr-0">
-              <div className="flex items-center gap-3 mb-4">
-                <span className="font-heading text-2xl font-semibold tracking-tight text-primary">BRAND NAME</span>
-              </div>
-              <p className="text-sm max-w-sm mb-6">
-                Thoughtfully curated lifestyle goods, designed to bring understated elegance and inspiration to your everyday routine.
-              </p>
-              <div className="flex items-center gap-3">
-                <a href="#" className="w-9 h-9 rounded-full bg-accent flex items-center justify-center  hover:bg-accent/80 transition-colors" aria-label="Share">
-                  <Share size={18} />
-                </a>
-                <a href="#" className="w-9 h-9 rounded-full bg-accent flex items-center justify-center hover:bg-accent/80 transition-colors" aria-label="Public">
-                  <Globe size={18} />
-                </a>
-                <a href="#" className="w-9 h-9 rounded-full bg-accent flex items-center justify-center hover:bg-accent/80 transition-colors" aria-label="Mail">
-                  <Mail size={18} />
-                </a>
-              </div>
-            </div>
-            <div>
-              <h4 className="text-[10px] font-medium uppercase tracking-wider text-secondary mb-4">Shop</h4>
-              <ul className="flex flex-col gap-2.5">
-                <li><Link to="/shop" className="text-sm text-secondary hover:text-primary transition-colors">Shop All</Link></li>
-                <li><Link to="/categories" className="text-sm text-secondary hover:text-primary transition-colors">Earrings</Link></li>
-                <li><Link to="/categories/frames" className="text-sm text-secondary hover:text-primary transition-colors">Frames</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-[10px] font-medium uppercase tracking-wider text-secondary mb-4">Customer Support</h4>
-              <ul className="flex flex-col gap-2.5">
-                <li><Link to="/contact" className="text-sm text-secondary hover:text-primary transition-colors">Contact Us</Link></li>
-                <li><Link to="/faqs" className="text-sm text-secondary hover:text-primary transition-colors">FAQs</Link></li>
-                <li><Link to="/shipping" className="text-sm text-secondary hover:text-primary transition-colors">Shipping Information</Link></li>
-                <li><Link to="/returns" className="text-sm text-secondary hover:text-primary transition-colors">Returns and Refunds</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-[10px] font-medium uppercase tracking-wider text-secondary mb-4">Legal</h4>
-              <ul className="flex flex-col gap-2.5">
-                <li><Link to="/privacy" className="text-sm text-secondary hover:text-primary transition-colors">Privacy Policy</Link></li>
-                <li><Link to="/terms" className="text-sm text-secondary hover:text-primary transition-colors">Terms and Conditions</Link></li>
-              </ul>
-            </div>
-          </div>
-          <div className="mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-[10px] text-secondary">© 2024 BRAND NAME. All rights reserved.</p>
-            <p className="text-[10px] text-secondary">Editorial calm &amp; understated craftsmanship.</p>
+                <h3 className="mt-3 font-heading text-lg text-primary md:text-2xl">
+                  {category.name}
+                </h3>
+                <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-secondary md:text-sm">
+                  {category.description}
+                </p>
+                <span className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-primary transition-colors group-hover:text-accent md:text-sm">
+                  Explore {category.name}
+                  <ArrowRight
+                    size={14}
+                    className="transition-transform group-hover:translate-x-0.5"
+                  />
+                </span>
+              </Link>
+            ))}
           </div>
         </div>
-      </footer>
+      </section>
+
+      {/* Handpicked products */}
+      <section className={cn(sectionX, 'pt-12 md:pt-20')}>
+        <div className={container}>
+          <SectionHeading
+            title="Handpicked for You"
+            description="Explore some of our favourite picks."
+            className="mb-4"
+          />
+
+          <div
+            role="group"
+            aria-label="Filter products"
+            className="-mx-4 mb-5 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] md:mx-0 md:mb-8 md:px-0 [&::-webkit-scrollbar]:hidden"
+          >
+            {filters.map(({ label, value, count }) => {
+              const active = activeFilter === value
+              return (
+                <button
+                  key={value}
+                  type="button"
+                  aria-pressed={active}
+                  onClick={() => setActiveFilter(value)}
+                  className={cn(
+                    'shrink-0 rounded-full border px-4 py-2 text-xs font-medium transition-colors',
+                    active
+                      ? 'border-primary bg-primary text-primary-foreground'
+                      : 'border-border bg-surface text-primary hover:border-primary'
+                  )}
+                >
+                  {label} ({count})
+                </button>
+              )
+            })}
+          </div>
+
+          <div className="grid grid-cols-2 gap-x-3 gap-y-6 md:grid-cols-3 md:gap-x-6 md:gap-y-10 lg:grid-cols-4">
+            {visibleProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+
+          <div className="mt-8 flex justify-center md:mt-12">
+            <Link
+              to="/products"
+              className={cn(
+                ctaBase,
+                'w-full border border-primary text-primary hover:bg-primary hover:text-primary-foreground md:w-auto md:px-10'
+              )}
+            >
+              Discover All Products ({products.length})
+              <ArrowRight size={16} />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Editorial banner */}
+      <section className={cn(sectionX, 'pt-14 md:pt-20')}>
+        <div
+          className={cn(
+            container,
+            'relative flex min-h-[420px] items-end overflow-hidden rounded-2xl bg-soft md:min-h-[520px] md:items-center'
+          )}
+        >
+          <img
+            src={EDITORIAL_IMAGE}
+            alt=""
+            loading="lazy"
+            className="absolute inset-0 size-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-transparent md:bg-gradient-to-r md:from-black/65 md:via-black/30" />
+
+          <div className="relative z-10 p-5 text-white sm:p-8 md:max-w-lg md:p-14">
+            <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-white/75">
+              Editorial Feature
+            </span>
+            <h2 className="mt-2 font-heading text-3xl leading-tight tracking-tight md:text-5xl">
+              Made to Match Your Style
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-white/85 md:text-base">
+              Explore products that make everyday moments feel a little more
+              special.
+            </p>
+            <Link
+              to="/about"
+              className={cn(
+                ctaBase,
+                'mt-6 border border-white/70 text-white hover:bg-white hover:text-primary'
+              )}
+            >
+              Discover the Story
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Why shop with us */}
+      <section className={cn(sectionX, 'pt-14 md:pt-20')}>
+        <div className={container}>
+          <SectionHeading
+            title="Shopping Made Simple"
+            description="Understated excellence and thoughtful execution at every step."
+          />
+
+          <div className="grid grid-cols-2 gap-3 md:gap-6 lg:grid-cols-4">
+            {features.map(({ title, description, icon: Icon }) => (
+              <div
+                key={title}
+                className="flex flex-col rounded-xl border border-border bg-surface p-4 md:p-6"
+              >
+                <div className="mb-3 flex size-9 items-center justify-center rounded-lg bg-soft text-accent md:mb-4 md:size-10">
+                  <Icon size={18} strokeWidth={1.8} />
+                </div>
+                <h3 className="text-sm font-semibold text-primary md:text-base">
+                  {title}
+                </h3>
+                <p className="mt-1 text-xs leading-relaxed text-secondary md:text-sm">
+                  {description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter */}
+      <section className={cn(sectionX, 'py-14 md:py-20')}>
+        <div
+          className={cn(
+            container,
+            'rounded-2xl border border-border bg-surface p-6 sm:p-10 md:p-14'
+          )}
+        >
+          <div className="max-w-xl md:mx-auto md:text-center">
+            <div className="mb-4 flex size-10 items-center justify-center rounded-full bg-soft text-accent md:mx-auto">
+              <Mail size={18} strokeWidth={1.8} />
+            </div>
+
+            <h2 className="font-heading text-2xl leading-tight tracking-tight text-primary md:text-4xl">
+              A Little Inspiration in Your Inbox
+            </h2>
+            <p className="mt-2 text-sm text-secondary">
+              Be the first to discover new arrivals, updates, and special
+              collections.
+            </p>
+
+            <form
+              onSubmit={handleSubscribe}
+              className="mt-6 flex flex-col gap-3 sm:flex-row"
+            >
+              <label htmlFor="newsletter-email" className="sr-only">
+                Email address
+              </label>
+              <input
+                id="newsletter-email"
+                type="email"
+                required
+                autoComplete="email"
+                placeholder="Enter your email address"
+                className="h-12 w-full min-w-0 rounded-lg sm:flex-1 border border-border bg-background px-4 text-sm text-primary placeholder:text-secondary focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
+              />
+              <button
+                type="submit"
+                className={cn(
+                  ctaBase,
+                  'shrink-0 bg-primary px-8 text-primary-foreground hover:bg-primary/85'
+                )}
+              >
+                Subscribe
+              </button>
+            </form>
+
+            <p role="status" className="mt-3 text-[11px] text-secondary">
+              {subscribed
+                ? 'Thank you for subscribing!'
+                : 'We respect your privacy. Unsubscribe at any time.'}
+            </p>
+          </div>
+        </div>
+      </section>
     </>
   )
 }
