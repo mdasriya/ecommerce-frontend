@@ -194,7 +194,7 @@ function HomePage() {
                 <h1 className="font-heading text-4xl md:text-5xl text-primary tracking-tight mb-4 leading-[1.1]">
                   Discover Your Everyday Favourites
                 </h1>
-                <p className="text-lg md:text-xl text-secondary mb-6 max-w-lg leading-relaxed">
+                <p className="text-lg md:text-xl mb-6 max-w-lg leading-relaxed">
                   Explore thoughtfully selected products that bring personality, style, and inspiration to your everyday life.
                 </p>
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
@@ -208,12 +208,12 @@ function HomePage() {
                 <div className="mt-8 pt-4 flex items-center gap-6">
                   <div className="flex flex-col">
                     <span className="text-2xl font-heading text-primary">01 / 02</span>
-                    <span className="text-xs uppercase tracking-widest text-secondary">Curated Editions</span>
+                    <span className="text-xs uppercase tracking-widest">Curated Editions</span>
                   </div>
                   <div className="h-8 w-px bg-border" />
                   <div className="flex flex-col">
                     <span className="text-2xl font-heading text-primary">100%</span>
-                    <span className="text-xs uppercase tracking-widest text-secondary">Artisanal Sourcing</span>
+                    <span className="text-xs uppercase tracking-widest">Artisanal Sourcing</span>
                   </div>
                 </div>
               </div>
@@ -226,9 +226,9 @@ function HomePage() {
           <div className="mx-auto max-w-[1440px]">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
               <div>
-                <span className="text-[10px] uppercase tracking-widest text-secondary block mb-1">Curation</span>
+                <span className="text-[10px] uppercase tracking-widest block mb-1">Curation</span>
                 <h2 className="font-heading text-2xl md:text-3xl text-primary tracking-tight">Explore Our Categories</h2>
-                <p className="text-sm text-secondary mt-1">Find something that feels just right for you.</p>
+                <p className="text-sm mt-1">Find something that feels just right for you.</p>
               </div>
               <Link
                 to="/categories"
@@ -244,7 +244,7 @@ function HomePage() {
                   name: 'Earrings',
                   slug: 'earrings',
                   image:
-                    'https://lh3.googleusercontent.com/aida-public/AB6AXuC9-NciIuCq_DBK_oUFrIRR7HXvm9LWfyVLsfySLmXIEiAo3levcho1ftpXwOGzVtdC9HyR1rK15iBIh1YAmnM2QYUjWz-vl4cVL7sfBE_mAlJ7A9XhWOAey0M1LDeFO411SlgI_ieXqcGSQPMW6VBbNb2sZ-hiq-EWGGu3WlZ0_c1mFdSf4S1wWSPeVSBOJotBXA3osg7HgFJOolc3QLPiY2sARu4D3oND98izFm8c',
+                    'https://lh3.googleusercontent.com/aida-public/AB6AXuBKtvBaOYkKvRSLMWDtcayVQk7dElJGTOR_a7Iq98nq0EY1mMy7bU5qBzkcpqja4Gvug8irg3htzbL6yZ07Iio-Bkj_mR1bJtjfe0HPkbtfh_mSO4ktkvEuNelxFANNRQn2D7vRlamhFbNOru4kfOuMKjmZR0ugHuukL2kcaTbI-efJNv7VFIvs0aoCaZ4r7JWlL14PpUbYPZeDs3hsJRvATp0FSXwKszjkPEy7dFsa',
                   description: 'Artisanal silhouettes and timeless modern finishes.',
                 },
                 {
@@ -267,22 +267,22 @@ function HomePage() {
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                     <div className="absolute top-4 left-4">
-                      <span className="px-3 py-1 rounded-md bg-white/90 backdrop-blur-sm text-[10px] uppercase tracking-wider text-secondary font-medium">
+                      <span className="px-3 py-1 rounded-md bg-white/90 backdrop-blur-sm text-[10px] uppercase tracking-wider font-medium">
                         Category 01
                       </span>
                     </div>
                   </div>
                   <div className="flex flex-col">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-sm font-medium text-primary group-hover:text-accent transition-colors">
+                      <h3 className="text-sm font-medium text-primary  transition-colors">
                         {category.name}
                       </h3>
-                      <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-primary group-hover:bg-primary-container group-hover:text-surface transition-all">
+                      <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-primary group-hover:text-surface transition-all">
                         <ArrowRight size={18} />
                       </div>
                     </div>
-                    <p className="text-sm text-secondary mt-1 mb-3">{category.description}</p>
-                    <span className="text-sm font-medium text-secondary inline-flex items-center gap-1 group-hover:underline">
+                    <p className="text-sm mt-1 mb-3">{category.description}</p>
+                    <span className="text-sm font-medium inline-flex items-center gap-1 group-hover:underline">
                       Explore {category.name}
                     </span>
                   </div>
