@@ -108,10 +108,8 @@ function HomePage() {
   ]
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
-        <div className="bg-surface-container-high py-2 px-4 text-center text-xs uppercase tracking-wider text-secondary">
-          Discover something special. Shop your favourites today.
-        </div>
+      {/* <header className="fixed top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
+        
         <div className="mx-auto max-w-7xl px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <button
@@ -171,11 +169,10 @@ function HomePage() {
             </div>
           </div>
         </div>
-      </header>
-
+      </header> */}
       <main className="w-full  bg-background">
         {/* Hero Banner */}
-        <section className="w-full px-4 md:px-8 py-6 md:py-16 pb-20">
+        <section className="w-fullmd:px-8  pb-20">
           <div className="mx-auto max-w-[1440px]">
             <div className="relative rounded-2xl overflow-hidden bg-accent min-h-[580px] lg:min-h-[640px] flex items-center shadow-sm">
               <div
@@ -277,12 +274,12 @@ function HomePage() {
                       <h3 className="text-sm font-medium text-primary  transition-colors">
                         {category.name}
                       </h3>
-                      <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-primary group-hover:text-surface transition-all">
+                      <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-primary  transition-all">
                         <ArrowRight size={18} />
                       </div>
                     </div>
                     <p className="text-sm mt-1 mb-3">{category.description}</p>
-                    <span className="text-sm font-medium inline-flex items-center gap-1 group-hover:underline">
+                    <span className="text-sm font-medium inline-flex items-center gap-1">
                       Explore {category.name}
                     </span>
                   </div>
