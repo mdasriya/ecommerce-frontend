@@ -89,7 +89,7 @@ function Header({ cartCount = 0 }) {
             </Link>
 
             <Link
-              to="/account"
+              to="/register"
               aria-label="Account"
               className={cn(iconButton, 'hidden md:flex')}
             >

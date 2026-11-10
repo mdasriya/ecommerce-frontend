@@ -29,7 +29,7 @@ const handleSubscribe = (
   const totalCollections = String(categories.length).padStart(2, '0')
 
   return (
-    <div className="min-h-screen bg-background px-4 pb-16 pt-32 text-primary md:px-8">
+    <div className="min-h-screen bg-background px-4 pb-16 pt-10 text-primary md:px-8">
       <div className="mx-auto w-full max-w-7xl">
 
         {/* Ambient background glow */}
@@ -58,16 +58,16 @@ const handleSubscribe = (
           </nav> */}
 
           {/* Page Introduction */}
-          <section className="mb-12 border-b border-border pb-8 md:mb-16">
+          <section className="mb-12 border-b border-border pb-8  pt-16 md:mb-16">
             <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
 
               <div className="max-w-2xl">
-                <div className="mb-3 flex items-center gap-3">
+                {/* <div className="mb-3 flex items-center gap-3">
                   <span className="h-px w-8 bg-accent" />
                   <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-secondary">
                     Atelier Departments
                   </span>
-                </div>
+                </div> */}
 
                 <h1 className="font-heading text-4xl leading-tight tracking-tight md:text-5xl">
                   Explore All Categories

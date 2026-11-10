@@ -45,7 +45,7 @@ export default function Wishlist() {
   }
 
   return (
-    <main className="min-h-screen bg-background px-4 pb-20 pt-32 sm:px-6 lg:px-10">
+    <main className="min-h-screen bg-background px-4 pb-20 pt-28 sm:px-6 lg:px-10">
       <div className="mx-auto max-w-7xl">
 
         {/* Breadcrumb */}

@@ -162,10 +162,10 @@ export default function Cart() {
   }
 
   return (
-    <main className="min-h-screen bg-[#F7F5F0] text-[#242424]">
+    <main className="min-h-screen pt-20 bg-[#F7F5F0] text-[#242424]">
 
       {/* Simulation Bar - Development Only */}
-      <div className="bg-[#E8E4DC] px-4 py-3 mt-22">
+      {/* <div className="bg-[#E8E4DC] px-4 py-3 mt-22">
         <div className="mx-auto flex max-w-[1440px] flex-wrap items-center justify-between gap-3">
           <span className="text-[11px] font-semibold uppercase tracking-widest text-[#74736E]">
             Demo Simulation View
@@ -195,7 +195,7 @@ export default function Cart() {
             </button>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Reassurance Ribbon */}
       {/* <section className="bg-[#F2EFE9] px-4 py-4">
@@ -556,14 +556,15 @@ export default function Cart() {
                   )}
                 </div>
 
-                {/* Checkout */}
-                <button
-                  disabled={items.length === 0}
-                  className="mt-6 flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-[#242424] text-xs font-semibold uppercase tracking-wider text-white shadow transition hover:bg-[#8A725B] disabled:opacity-50"
-                >
-                  <LockKeyhole size={16} />
-                  Proceed to Checkout
-                </button>
+                 {/* Checkout */}
+                 <Link
+                   to="/checkout"
+                   className="mt-6 flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-[#242424] text-xs font-semibold uppercase tracking-wider text-white shadow transition hover:bg-[#8A725B] disabled:opacity-50"
+                   style={{ textDecoration: 'none' }}
+                 >
+                   <LockKeyhole size={16} />
+                   Proceed to Checkout
+                 </Link>
 
                 <div className="mt-5 text-center text-[10px] text-[#74736E]">
                   Secure checkout · Protected payments

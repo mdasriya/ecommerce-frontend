@@ -7,7 +7,16 @@
 @theme {
   /* Brand-only tokens (shared tokens live in :root below) */
   --color-surface: #FFFFFF;
+  --color-surface-container-lowest: #F7F5F0;
+  --color-surface-container-low: #EEEAE2;
+  --color-surface-container: #E5E0D7;
+  --color-surface-container-highest: #D4CFC7;
   --color-soft: #EEEAE2;
+  --color-on-surface: #242424;
+  --color-on-surface-variant: #74736E;
+  --color-on-secondary-fixed: #FFFFFF;
+  --color-primary-container: #8A725B;
+  --color-outline: #8A725B;
 
   --animate-marquee: marquee 40s linear infinite;
 
