@@ -9,7 +9,7 @@ import {
 
 function Header() {
   return (
-    <header className="sticky top-0 z-50 w-full px-4">
+    <header className="fixed top-4  z-50 w-full px-4">
       <div className="mx-auto flex w-[90%] max-w-7xl items-center justify-between rounded-2xl border border-border bg-white/95 px-6 py-4 shadow-sm backdrop-blur-md">
 
         {/* Logo */}

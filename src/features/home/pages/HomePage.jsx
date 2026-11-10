@@ -1,5 +1,10 @@
 import { Link } from 'react-router-dom'
-import { Menu, Search, Heart, ShoppingBag, Mail, Share, Globe, ArrowRight } from 'lucide-react'
+import {
+  Mail, Share, Globe, ArrowRight, BadgeCheck,
+  LockKeyhole,
+  Truck,
+  Headset,
+} from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import ProductCard from '@/components/common/ProductCard'
 
@@ -106,6 +111,33 @@ function HomePage() {
       reviewCount: 156,
     },
   ]
+
+  const features = [
+    {
+      title: "Carefully Selected Products",
+      icon: BadgeCheck,
+      description:
+        "Every item in our collection is chosen for enduring craftsmanship and aesthetic clarity.",
+    },
+    {
+      title: "Secure Payments",
+      icon: LockKeyhole,
+      description:
+        "Industry-standard encrypted checkout supporting major cards and digital wallets.",
+    },
+    {
+      title: "Reliable Shopping Experience",
+      icon: Truck,
+      description:
+        "Transparent order tracking and prompt fulfillment on every purchase.",
+    },
+    {
+      title: "Customer Support",
+      icon: Headset,
+      description:
+        "Dedicated assistance ready to help with orders, inquiries, or style guidance.",
+    },
+  ];
   return (
     <>
       {/* <header className="fixed top-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
@@ -172,7 +204,7 @@ function HomePage() {
       </header> */}
       <main className="w-full  bg-background">
         {/* Hero Banner */}
-        <section className="w-fullmd:px-8  pb-20">
+        <section className="w-full  pb-20">
           <div className="mx-auto max-w-[1440px]">
             <div className="relative rounded-2xl overflow-hidden bg-accent min-h-[580px] lg:min-h-[640px] flex items-center shadow-sm">
               <div
@@ -330,11 +362,11 @@ function HomePage() {
               />
               <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/70 to-transparent md:w-3/5" />
               <div className="relative z-10 max-w-lg flex flex-col items-start">
-                <span className="text-[10px] uppercase tracking-widest text-secondary mb-2">Editorial Narrative</span>
+                <span className="text-[10px] uppercase tracking-widest mb-2">Editorial Narrative</span>
                 <h2 className="font-heading text-2xl md:text-3xl text-primary tracking-tight mb-4 leading-tight">
                   Made to Match Your Style
                 </h2>
-                <p className="text-lg md:text-xl text-secondary mb-6 leading-relaxed">
+                <p className="text-lg md:text-xl mb-6 leading-relaxed">
                   Explore products that make everyday moments feel a little more special.
                 </p>
                 <Button size="lg">
@@ -349,45 +381,36 @@ function HomePage() {
         <section className="w-full px-4 md:px-8 py-16 bg-accent/50">
           <div className="mx-auto max-w-[1440px]">
             <div className="text-center max-w-xl mx-auto mb-16">
-              <span className="text-[10px] uppercase tracking-widest text-secondary block mb-1">The Experience</span>
+              <span className="text-[10px] uppercase tracking-widest block mb-1">The Experience</span>
               <h2 className="font-heading text-2xl md:text-3xl text-primary tracking-tight">Shopping Made Simple</h2>
-              <p className="text-sm text-secondary mt-2">Understated excellence and thoughtful execution at every step.</p>
+              <p className="text-sm mt-2">Understated excellence and thoughtful execution at every step.</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {[
-                {
-                  title: 'Carefully Selected Products',
-                  icon: 'verified',
-                  description: 'Every item in our collection is chosen for enduring craftsmanship and aesthetic clarity.',
-                },
-                {
-                  title: 'Secure Payments',
-                  icon: 'lock',
-                  description: 'Industry-standard encrypted checkout supporting major cards and digital wallets.',
-                },
-                {
-                  title: 'Reliable Shopping Experience',
-                  icon: 'local_shipping',
-                  description: 'Transparent order tracking and prompt fulfillment on every purchase.',
-                },
-                {
-                  title: 'Customer Support',
-                  icon: 'support_agent',
-                  description: 'Dedicated assistance ready to help with orders, inquiries, or style guidance.',
-                },
-              ].map((feature) => (
-                <div
-                  key={feature.title}
-                  className="flex flex-col items-start bg-background p-6 rounded-xl shadow-sm hover:-translate-y-1 transition-transform duration-200"
-                >
-                  <div className="w-10 h-10 rounded-lg bg-accent flex items-center justify-center text-primary mb-4">
-                    <span className="material-symbols-outlined text-[20px]">{feature.icon}</span>
+              {features.map((feature) => {
+                const Icon = feature.icon;
+
+                return (
+                  <div
+                    key={feature.title}
+                    className="flex flex-col items-start bg-background p-6 rounded-xl shadow-sm hover:-translate-y-1 transition-transform duration-200"
+                  >
+                    <div className="w-10 h-10 rounded-lg bg-accent flex items-center justify-center text-primary mb-4">
+                      <Icon size={20} strokeWidth={1.8} />
+                    </div>
+
+                    <h3 className="font-heading text-base text-primary mb-2">
+                      {feature.title}
+                    </h3>
+
+                    <p className="text-sm leading-relaxed">
+                      {feature.description}
+                    </p>
                   </div>
-                  <h3 className="font-heading text-base text-primary mb-2">{feature.title}</h3>
-                  <p className="text-sm text-secondary leading-relaxed">{feature.description}</p>
-                </div>
-              ))}
+                );
+              })}
             </div>
+
+
           </div>
         </section>
 
@@ -400,7 +423,7 @@ function HomePage() {
                 <h2 className="font-heading text-2xl md:text-3xl text-primary tracking-tight mb-2">
                   A Little Inspiration in Your Inbox
                 </h2>
-                <p className="text-sm md:text-base text-secondary mb-6 max-w-lg">
+                <p className="text-sm md:text-base mb-6 max-w-lg">
                   Be the first to discover new arrivals, updates, and special collections.
                 </p>
                 <form
@@ -413,12 +436,17 @@ function HomePage() {
                   }}
                 >
                   <input
-                    className="flex-grow h-12 px-4 rounded-xl bg-background text-primary font-body-md placeholder:text-secondary/60 focus:outline-none focus:ring-2 focus:ring-primary shadow-sm"
+                    className="flex-grow h-12 px-4 rounded-xl bg-background text-primary font-body-md  focus:outline-none focus:ring-2 focus:ring-primary shadow-sm"
                     placeholder="Enter your email address"
                     type="email"
                     required
                   />
-                  <Button>SUBSCRIBE</Button>
+                  <Button
+                    type="submit"
+                    className="h-12 px-8 rounded-xl inline-flex items-center justify-center whitespace-nowrap shrink-0 w-full sm:w-auto"
+                  >
+                    SUBSCRIBE
+                  </Button>
                 </form>
                 <p className="text-[10px] text-secondary">We respect your privacy. Unsubscribe at any time.</p>
               </div>
@@ -434,17 +462,17 @@ function HomePage() {
               <div className="flex items-center gap-3 mb-4">
                 <span className="font-heading text-2xl font-semibold tracking-tight text-primary">BRAND NAME</span>
               </div>
-              <p className="text-sm text-secondary max-w-sm mb-6">
+              <p className="text-sm max-w-sm mb-6">
                 Thoughtfully curated lifestyle goods, designed to bring understated elegance and inspiration to your everyday routine.
               </p>
               <div className="flex items-center gap-3">
-                <a href="#" className="w-9 h-9 rounded-full bg-accent flex items-center justify-center text-secondary hover:bg-accent/80 transition-colors" aria-label="Share">
+                <a href="#" className="w-9 h-9 rounded-full bg-accent flex items-center justify-center  hover:bg-accent/80 transition-colors" aria-label="Share">
                   <Share size={18} />
                 </a>
-                <a href="#" className="w-9 h-9 rounded-full bg-accent flex items-center justify-center text-secondary hover:bg-accent/80 transition-colors" aria-label="Public">
+                <a href="#" className="w-9 h-9 rounded-full bg-accent flex items-center justify-center hover:bg-accent/80 transition-colors" aria-label="Public">
                   <Globe size={18} />
                 </a>
-                <a href="#" className="w-9 h-9 rounded-full bg-accent flex items-center justify-center text-secondary hover:bg-accent/80 transition-colors" aria-label="Mail">
+                <a href="#" className="w-9 h-9 rounded-full bg-accent flex items-center justify-center hover:bg-accent/80 transition-colors" aria-label="Mail">
                   <Mail size={18} />
                 </a>
               </div>
