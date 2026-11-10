@@ -100,7 +100,7 @@ export default function CheckoutPage() {
         <span class="material-symbols-outlined text-[20px]">lock</span>
         <span>Securing Atelier Reservation...</span>
       `
-      btn.disabled = true
+      // btn.disabled = true
     }
   }
 
