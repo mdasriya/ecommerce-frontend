@@ -10,6 +10,7 @@ const navLinks = [
   { label: 'Categories', to: '/categories' },
   { label: 'Wishlist', to: '/wishlist' },
   { label: 'My Orders', to: '/my-orders' },
+  { label: 'My Profile', to: '/my-profile' },
 ]
 
 const iconButton =
