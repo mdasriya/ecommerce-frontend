@@ -1163,9 +1163,9 @@ export default function Checkout() {
                         <span className="text-lg font-['Playfair_Display'] text-[#1b1c19] font-medium">
                           {formatMoney(total)}
                         </span>
-                        <span className="text-xs text-[#444748] block font-mono">
+                        {/* <span className="text-xs text-[#444748] block font-mono">
                           ≈ ₹{Math.round(total * 83.33).toLocaleString()} INR
-                        </span>
+                        </span> */}
                       </div>
                     </div>
                   </div>
