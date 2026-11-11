@@ -1,6 +1,5 @@
 import { useState, useMemo } from 'react'
 import {
-  ArrowLeft,
   Check,
   CheckCircle2,
   ChevronDown,
@@ -8,8 +7,6 @@ import {
   Copy,
   CreditCard,
   HelpCircle,
-  History,
-  Headset,
   Leaf,
   Lock,
   Mail,
@@ -19,32 +16,31 @@ import {
   User,
   Wallet,
   X,
-  Zap,
 } from 'lucide-react'
 
 const CN = (cls: string) => cls
 
-const colors = {
-  surface: '#fbf9f4',
-  surfaceContainerLow: '#f5f3ee',
-  surfaceContainerLowest: '#ffffff',
-  surfaceContainer: '#f0eee9',
-  surfaceContainerHigh: '#eae8e3',
-  surfaceContainerHighest: '#e4e2dd',
-  primary: '#0e0f0f',
-  primaryContainer: '#242424',
-  onPrimary: '#ffffff',
-  onPrimaryContainer: '#8c8b8b',
-  secondary: '#705a45',
-  secondaryContainer: '#fcddc1',
-  onSecondary: '#ffffff',
-  onSecondaryFixed: '#281807',
-  onSurface: '#1b1c19',
-  onSurfaceVariant: '#444748',
-  outline: '#747878',
-  error: '#ba1a1a',
-  errorContainer: '#ffdad6',
-}
+// const colors = {
+//   surface: '#fbf9f4',
+//   surfaceContainerLow: '#f5f3ee',
+//   surfaceContainerLowest: '#ffffff',
+//   surfaceContainer: '#f0eee9',
+//   surfaceContainerHigh: '#eae8e3',
+//   surfaceContainerHighest: '#e4e2dd',
+//   primary: '#0e0f0f',
+//   primaryContainer: '#242424',
+//   onPrimary: '#ffffff',
+//   onPrimaryContainer: '#8c8b8b',
+//   secondary: '#705a45',
+//   secondaryContainer: '#fcddc1',
+//   onSecondary: '#ffffff',
+//   onSecondaryFixed: '#281807',
+//   onSurface: '#1b1c19',
+//   onSurfaceVariant: '#444748',
+//   outline: '#747878',
+//   error: '#ba1a1a',
+//   errorContainer: '#ffdad6',
+// }
 
 const baseSubtotal = 256
 const promoDiscount = 25
@@ -105,12 +101,12 @@ const countryOptions = [
 
 const stateOptions = [
   { value: 'MH', label: 'Maharashtra' },
-  { value: 'DL', label: 'Delhi NCR' },
-  { value: 'KA', label: 'Karnataka' },
-  { value: 'TN', label: 'Tamil Nadu' },
-  { value: 'TS', label: 'Telangana' },
-  { value: 'WB', label: 'West Bengal' },
-  { value: 'GJ', label: 'Gujarat' },
+  // { value: 'DL', label: 'Delhi NCR' },
+  // { value: 'KA', label: 'Karnataka' },
+  // { value: 'TN', label: 'Tamil Nadu' },
+  // { value: 'TS', label: 'Telangana' },
+  // { value: 'WB', label: 'West Bengal' },
+  // { value: 'GJ', label: 'Gujarat' },
 ]
 
 const cartItems = [

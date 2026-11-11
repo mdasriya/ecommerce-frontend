@@ -9,6 +9,7 @@ const navLinks = [
   { label: 'Shop', to: '/products' },
   { label: 'Categories', to: '/categories' },
   { label: 'Wishlist', to: '/wishlist' },
+  { label: 'My Orders', to: '/my-orders' },
 ]
 
 const iconButton =

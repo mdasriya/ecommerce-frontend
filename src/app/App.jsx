@@ -6,6 +6,8 @@ import Loader from '../components/ui/Loader'
 import Wishlist from '@/features/wishlist/Wishlist'
 import Cart from '@/features/cart/pages/Cart'
 import Checkout from '@/features/cart/checkout/Checkout'
+import OrderConfirmation from '@/features/cart/confirmation/OrderConfirmation'
+import MyOrders from '@/features/orders/pages/MyOrders'
 import Register from '@/features/auth/Register/Register'
 import SignIn from '@/features/auth/signIn/SignIn'
 import ForgotPassword from '@/features/auth/ForgotPassword/ForgotPassword'
@@ -35,8 +37,11 @@ function App() {
           <Route path="/products" element={<ProductListingPage />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/my-orders" element={<MyOrders />} />
            <Route path="/checkout" element={<Checkout />} />
+        <Route path="/order-confirmation" element={<OrderConfirmation />} />
         </Route>
+       
        
         <Route element={<AuthLayout />}>
           <Route path="/register" element={<Register />} />
